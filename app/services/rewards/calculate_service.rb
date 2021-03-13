@@ -45,22 +45,22 @@ module Rewards
       end
     end
 
-    def add_referral_history(source, target)
-      referral_history[target] = { parent: source, score: 0 }
-      unless referral_history[source]
-        referral_history[source] = { parent: nil, score: 0 }
+    def add_referral_history(actor, referred)
+      referral_history[referred] = { referrer: actor, score: 0 }
+      unless referral_history[actor]
+        referral_history[actor] = { referrer: nil, score: 0 }
       end
-      processed_targets << target
+      processed_targets << referred
     end
 
-    def add_score(source_key, power)
-      referral_history.select { |key, _v| key == source_key }.each do |_key, value|
-        parent_key = value[:parent]
-        return unless parent_key # next to make rubocop happy
+    def add_score(actor, power)
+      referral_history.select { |key, _v| key == actor }.each do |_key, value|
+        referrer_key = value[:referrer]
+        break unless referrer_key
 
-        parent = referral_history[parent_key]
-        parent[:score] += POINT_FACTOR**power
-        add_score(parent_key, power + 1)
+        referrer = referral_history[referrer_key]
+        referrer[:score] += POINT_FACTOR**power
+        add_score(referrer_key, power + 1)
       end
     end
 
