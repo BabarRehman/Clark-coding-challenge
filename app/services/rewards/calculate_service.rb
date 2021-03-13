@@ -4,8 +4,6 @@ module Rewards
   class CalculateService
     POINT_FACTOR = 0.5
 
-    attr_accessor :data, :processed_sources, :processed_targets, :referral_history
-
     def self.call(params)
       new(params).call
     end
@@ -16,6 +14,8 @@ module Rewards
     end
 
     private
+
+    attr_accessor :data, :processed_sources, :processed_targets, :referral_history
 
     def initialize(params)
       self.data = params[:data]
