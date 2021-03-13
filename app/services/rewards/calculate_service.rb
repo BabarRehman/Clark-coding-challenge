@@ -17,19 +17,19 @@ module Rewards
 
     attr_accessor :referral_records,
                   :processed_sources,
-                  :processed_targets,
+                  :processed_referees,
                   :referral_history
 
     def initialize(params)
       self.referral_records = params[:data]
       self.processed_sources = []
-      self.processed_targets = []
+      self.processed_referees = []
       self.referral_history = {}
     end
 
     def calculate
       referral_records.each do |referral_record|
-        next if processed_targets.include?(referral_record[:referred])
+        next if processed_referees.include?(referral_record[:referee])
 
         add_history_or_scoring(referral_record)
       end
@@ -38,19 +38,19 @@ module Rewards
     def add_history_or_scoring(record)
       case record[:action]
       when 'recommends'
-        add_referral_history(record[:actor], record[:referred]) if record[:referred]
+        add_referral_history(record[:actor], record[:referee]) if record[:referee]
       when 'accepts'
         add_score(record[:actor], 0) if processed_sources.exclude?(record[:actor])
         processed_sources << record[:actor]
       end
     end
 
-    def add_referral_history(actor, referred)
-      referral_history[referred] = { referrer: actor, score: 0 }
+    def add_referral_history(actor, referee)
       unless referral_history[actor]
         referral_history[actor] = { referrer: nil, score: 0 }
       end
-      processed_targets << referred
+      referral_history[referee] = { referrer: actor, score: 0 }
+      processed_referees << referee
     end
 
     def add_score(actor, power)

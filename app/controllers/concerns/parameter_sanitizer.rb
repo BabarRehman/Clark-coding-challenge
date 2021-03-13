@@ -41,6 +41,6 @@ module ParameterSanitizer
       time: attributes[1],
       actor: attributes[2],
       action: attributes[3],
-      referred: attributes[4] }
+      referee: attributes[4] }
   end
 end

@@ -2,14 +2,14 @@
 
 require 'spec_helper'
 require 'shared/calculated_scores'
-require 'support/missing_referred'
-require 'support/referred_accepts_twice'
+require 'support/missing_referee'
+require 'support/referee_accepts_twice'
 require 'support/sanitized_calculation'
 require 'support/starts_with_acceptance'
 
 RSpec.describe Rewards::CalculateService do
-  include Support::MissingReferred
-  include Support::ReferredAcceptsTwice
+  include Support::MissingReferee
+  include Support::RefereeAcceptsTwice
   include Support::SanitizedCalculation
   include Support::StartsWithAcceptance
 
@@ -17,8 +17,8 @@ RSpec.describe Rewards::CalculateService do
 
   let(:sanitized_input) { Support::SanitizedCalculation::SANITIZED_HASH }
   let(:starts_with_acceptance) { Support::StartsWithAcceptance::SANITIZED_HASH }
-  let(:missing_referred) { Support::MissingReferred::SANITIZED_HASH }
-  let(:referred_accepts_twice) { Support::ReferredAcceptsTwice::SANITIZED_HASH }
+  let(:missing_referred) { Support::MissingReferee::SANITIZED_HASH }
+  let(:referred_accepts_twice) { Support::RefereeAcceptsTwice::SANITIZED_HASH }
   let(:params) { { data: sanitized_input } }
 
   describe 'call' do
