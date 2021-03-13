@@ -39,7 +39,7 @@ module ParameterSanitizer
   def build_data(attributes)
     { date: attributes[0],
       time: attributes[1],
-      referrer: attributes[2],
+      actor: attributes[2],
       action: attributes[3],
       referred: attributes[4] }
   end

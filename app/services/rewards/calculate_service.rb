@@ -35,10 +35,10 @@ module Rewards
     def add_history_or_scoring(record)
       case record[:action]
       when 'recommends'
-        add_referral_history(record[:referrer], record[:referred]) if record[:referred]
+        add_referral_history(record[:actor], record[:referred]) if record[:referred]
       when 'accepts'
-        add_score(record[:referrer], 0) if processed_sources.exclude?(record[:referrer])
-        processed_sources << record[:referrer]
+        add_score(record[:actor], 0) if processed_sources.exclude?(record[:actor])
+        processed_sources << record[:actor]
       end
     end
 
