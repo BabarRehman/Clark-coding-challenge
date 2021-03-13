@@ -15,17 +15,20 @@ module Rewards
 
     private
 
-    attr_accessor :data, :processed_sources, :processed_targets, :referral_history
+    attr_accessor :referral_records,
+                  :processed_sources,
+                  :processed_targets,
+                  :referral_history
 
     def initialize(params)
-      self.data = params[:data]
+      self.referral_records = params[:data]
       self.processed_sources = []
       self.processed_targets = []
       self.referral_history = {}
     end
 
     def calculate
-      data.each do |referral_record|
+      referral_records.each do |referral_record|
         next if processed_targets.include?(referral_record[:referred])
 
         add_history_or_scoring(referral_record)
