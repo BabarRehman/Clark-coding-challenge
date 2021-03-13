@@ -54,14 +54,12 @@ module Rewards
     end
 
     def add_score(actor, power)
-      referral_history.select { |key, _v| key == actor }.each do |_key, value|
-        referrer_key = value[:referrer]
-        break unless referrer_key
+      referrer_key = referral_history.fetch(actor, {}).dig(:referrer)
+      return unless referrer_key
 
-        referrer = referral_history[referrer_key]
-        referrer[:score] += POINT_FACTOR**power
-        add_score(referrer_key, power + 1)
-      end
+      referrer = referral_history[referrer_key]
+      referrer[:score] += POINT_FACTOR**power
+      add_score(referrer_key, power + 1)
     end
 
     def sort_referrals
