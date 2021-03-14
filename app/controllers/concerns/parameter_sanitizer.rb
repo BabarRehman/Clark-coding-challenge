@@ -32,14 +32,14 @@ module ParameterSanitizer
   end
 
   def successful_response(data)
-    response(data, :success)
+    generic_response(data, :success)
   end
 
   def error_response(message)
-    response(message, :error)
+    generic_response(message, :error)
   end
 
-  def response(data, status)
+  def generic_response(data, status)
     { status: status, data: data }
   end
 

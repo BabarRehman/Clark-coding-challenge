@@ -2,4 +2,5 @@
 
 class ApplicationController < ActionController::Base
   include ParameterSanitizer
+  include ReferralFilter
 end
