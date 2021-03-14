@@ -1,4 +1,4 @@
-<%= form_for :calculation, url: url_for(controller: :rewards, action: :calculate) do |form| %>
-  <%= form.file_field :referral_history, required: true, accept: 'text/plain' %></br>
-  <%= form.submit 'Calculate Rewards' %>
+<%= form_tag( url_for(controller: :rewards, action: :calculate), multipart: true) do %>
+  <%= file_field_tag :referral_history, required: true, accept: 'text/plain' %></br>
+  <%= submit_tag 'Calculate Rewards' %>
 <% end %>

@@ -11,7 +11,7 @@ RSpec.describe ParameterSanitizer do
   subject(:sanitized_data) { sanitized_calculation_hash(params) }
 
   let(:referral_history) { Tempfile.new('foo').tap { |f| f << content } }
-  let(:params) { { calculation: { referral_history: referral_history } } }
+  let(:params) { { referral_history: referral_history } }
   let(:expected_output) { Support::SanitizedCalculation::SANITIZED_HASH }
 
   let(:content) do

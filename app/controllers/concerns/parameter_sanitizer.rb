@@ -4,7 +4,7 @@ module ParameterSanitizer
   extend ActiveSupport::Concern
 
   def sanitized_calculation_hash(params)
-    file = params.dig(:calculation, :referral_history)
+    file = params.dig(:referral_history)
 
     if file.respond_to?(:read)
       readable_response(file)
