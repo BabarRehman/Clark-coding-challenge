@@ -5,9 +5,11 @@ RSpec.describe RewardsController do
   describe 'POST calculate' do
     let(:fixture_path) { Rails.root.join('spec/fixtures/files') }
     let(:params) { { referral_history: referral_history_file } }
+
     before do
       post :calculate, params: params
     end
+
     context 'without file it gives back an error' do
       let(:referral_history_file) { nil }
 
@@ -23,7 +25,7 @@ RSpec.describe RewardsController do
     end
 
     context 'with file being empty' do
-      let(:referral_history_file) { fixture_file_upload(fixture_path + 'empty.txt') }
+      let(:referral_history_file) { fixture_file_upload("#{fixture_path}/empty.txt") }
       it 'returns the status as 400' do
         expect(response.status).to eq(400)
       end
@@ -36,7 +38,7 @@ RSpec.describe RewardsController do
     end
 
     context 'with processable file' do
-      let(:referral_history_file) { fixture_file_upload(fixture_path + 'perfect_input.txt') }
+      let(:referral_history_file) { fixture_file_upload("#{fixture_path}/perfect_input.txt") }
 
       it 'returns the status as 200' do
         expect(response.status).to eq(200)

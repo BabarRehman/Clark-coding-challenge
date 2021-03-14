@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+# Powers the app.
 class RewardsController < ApplicationController
+  # Since sending the referral history is being done with text file, the index makes the task
+  # interaction easier
   def index; end
 
+  # The endpoint for the task. accepts plain text files and return a json response
   def calculate
     sanitized = sanitized_calculation_hash(params)
 

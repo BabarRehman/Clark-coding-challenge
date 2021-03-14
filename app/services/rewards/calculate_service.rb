@@ -1,8 +1,34 @@
 # frozen_string_literal: true
 
 module Rewards
+  # The brain of the application. It accepts the input, creates a hash of the history for correct
+  # records and increments the score by the formula (1/2)^n where n being degree of separation from
+  # the recommender in recommendation chain. n starts from 0 for direct recommender and increments
+  # up the chain. It ensures that among multiple referrals to the same referee only the first one
+  # gets credit in case of referee acceptance. Any acceptances without a recommender, double
+  # acceptances, and recommendations without referee (all possible errors in input) are handled.
+  # in input file)
+  #
+  # input:
+  # { :data=>
+  #   [{:actor=>"A",
+  #     :action=>"recommends",
+  #     :referee=>"B"},
+  #    {:actor=>"B",
+  #     :action=>"accepts",
+  #     :referee=>nil},
+  #    {:actor=>"B",
+  #     :action=>"recommends",
+  #     :referee=>"C"},
+  #    {:actor=>"C",
+  #     :action=>"accepts",
+  #     :referee=>nil}]  }
+  # output:
+  # {"A"=>{:referrer=>nil, :score=>1.5},
+  #  "B"=>{:referrer=>"A", :score=>1.0},
+  #  "C"=>{:referrer=>"B", :score=>0}}
   class CalculateService
-    POINT_FACTOR = 0.5
+    POINTS_FACTOR = 0.5
 
     def self.call(params)
       new(params).call
@@ -52,11 +78,11 @@ module Rewards
     end
 
     def add_score(actor, power)
-      referrer_key = referral_history.fetch(actor, {}).dig(:referrer)
+      referrer_key = referral_history.fetch(actor, {})[:referrer]
       return unless referrer_key
 
       referrer = referral_history[referrer_key]
-      referrer[:score] += POINT_FACTOR**power
+      referrer[:score] += POINTS_FACTOR**power
       add_score(referrer_key, power + 1)
     end
 

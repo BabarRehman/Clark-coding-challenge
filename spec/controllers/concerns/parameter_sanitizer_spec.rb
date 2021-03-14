@@ -10,7 +10,7 @@ RSpec.describe ParameterSanitizer do
   include Support::SanitizedCalculation
   subject(:sanitized_data) { sanitized_calculation_hash(params) }
   let(:fixture_path) { Rails.root.join('spec/fixtures/files') }
-  let(:referral_history_file) { fixture_file_upload(fixture_path + 'perfect_input.txt') }
+  let(:referral_history_file) { fixture_file_upload("#{fixture_path}/perfect_input.txt") }
   let(:params) { { referral_history: referral_history_file } }
   let(:expected_output) { Support::SanitizedCalculation::SANITIZED_HASH }
 
@@ -22,20 +22,22 @@ RSpec.describe ParameterSanitizer do
 
       context 'when file has empty lines along with data' do
         let(:referral_history_file) do
-          fixture_file_upload(fixture_path + 'input_with_empty_lines.txt')
+          fixture_file_upload("#{fixture_path}/input_with_empty_lines.txt")
         end
 
         it_behaves_like 'successful transformation'
       end
 
       context 'when file is empty' do
-        let(:referral_history_file) { fixture_file_upload(fixture_path + 'empty.txt') }
+        let(:referral_history_file) { fixture_file_upload("#{fixture_path}/empty.txt") }
 
         it_behaves_like 'empty file'
       end
 
       context 'when file has all empty lines' do
-        let(:referral_history_file) { fixture_file_upload(fixture_path + 'input_with_all_empty_lines.txt') }
+        let(:referral_history_file) do
+          fixture_file_upload("#{fixture_path}/input_with_all_empty_lines.txt")
+        end
 
         it_behaves_like 'empty file'
       end
