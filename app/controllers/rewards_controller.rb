@@ -6,9 +6,7 @@ class RewardsController < ApplicationController
   def calculate
     sanitized = sanitized_calculation_hash(params)
 
-    if sanitized[:status] == :error
-      return render json: { error: sanitized[:data] }
-    end
+    return render json: { error: sanitized[:data] } if sanitized[:status] == :error
 
     referrals = Rewards::CalculateService.call(data: sanitized[:data])
 

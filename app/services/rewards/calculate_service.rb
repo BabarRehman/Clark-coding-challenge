@@ -31,11 +31,11 @@ module Rewards
       referral_records.each do |referral_record|
         next if processed_referees.include?(referral_record[:referee])
 
-        add_history_or_scoring(referral_record)
+        add_history_or_score(referral_record)
       end
     end
 
-    def add_history_or_scoring(record)
+    def add_history_or_score(record)
       case record[:action]
       when 'recommends'
         add_referral_history(record[:actor], record[:referee]) if record[:referee]
@@ -46,9 +46,7 @@ module Rewards
     end
 
     def add_referral_history(actor, referee)
-      unless referral_history[actor]
-        referral_history[actor] = { referrer: nil, score: 0 }
-      end
+      referral_history[actor] = { referrer: nil, score: 0 } unless referral_history[actor]
       referral_history[referee] = { referrer: actor, score: 0 }
       processed_referees << referee
     end

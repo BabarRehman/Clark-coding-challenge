@@ -56,7 +56,6 @@ RSpec.describe ParameterSanitizer do
 
         it_behaves_like 'empty file'
       end
-
     end
 
     context 'when the file is not readable' do

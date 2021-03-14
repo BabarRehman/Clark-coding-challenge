@@ -4,39 +4,57 @@ module ParameterSanitizer
   extend ActiveSupport::Concern
 
   def sanitized_calculation_hash(params)
-    file_data = params.dig(:calculation, :referral_history)
+    file = params.dig(:calculation, :referral_history)
 
-    status = :success
-
-    if file_data.respond_to?(:read)
-      data = read_file(file_data)
+    if file.respond_to?(:read)
+      readable_response(file)
     else
-      status = :error
-      data = 'provided file is not processable'
+      unreadable_response
     end
-
-    if data.blank?
-      status = :error
-      data = 'provided file does not contain any data'
-    end
-
-    { status: status, data: data }
   end
 
   private
 
-  def read_file(file)
-    [].tap do |data|
-      file.open.each_line do |line|
-        line_data = line.split(' ')
-        next if line_data.blank?
+  def readable_response(file)
+    records = read_file(file)
 
-        data << build_data(line_data)
+    return empty_response if records.blank?
+
+    successful_response(records)
+  end
+
+  def empty_response
+    error_response('provided file does not contain any data')
+  end
+
+  def unreadable_response
+    error_response('provided file is not processable')
+  end
+
+  def successful_response(data)
+    response(data, :success)
+  end
+
+  def error_response(message)
+    response(message, :error)
+  end
+
+  def response(data, status)
+    { status: status, data: data }
+  end
+
+  def read_file(file)
+    [].tap do |records|
+      file.open.each_line do |line|
+        attributes = line.split(' ')
+        next if attributes.blank?
+
+        records << build_record(attributes)
       end
     end
   end
 
-  def build_data(attributes)
+  def build_record(attributes)
     { date: attributes[0],
       time: attributes[1],
       actor: attributes[2],
