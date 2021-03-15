@@ -1,6 +1,6 @@
 # CLARK CODING CHALLENGE
 
-A simple service to calculate the referral scoring.
+A simple service to calculate the referral scoring. The entry point to the code is in file 'app/controllers/rewards_controller.rb' 'calculate' method
 
 All the commands should be run in the root directory of the application after pulling.
 
